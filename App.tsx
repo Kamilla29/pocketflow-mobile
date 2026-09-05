@@ -28,7 +28,7 @@ const linking = {
       Checklist: 'checklist'
     }
   }
-} as const;
+};
 
 export default function App() {
   const theme = useAppTheme();
