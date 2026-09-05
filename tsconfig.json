@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "paths": {
-      "@app/*": ["src/*"]
+      "@app/*": ["./src/*"]
     }
   },
   "include": ["App.tsx", "src", "__tests__"],
