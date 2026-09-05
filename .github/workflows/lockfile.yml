@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   lock:
-    if: ${{ !contains(github.event.head_commit.message, 'chore: lock dependencies') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -27,7 +26,7 @@ jobs:
       - name: Generate lockfile
         run: npm install --package-lock-only
 
-      - name: Commit lockfile
+      - name: Commit lockfile when changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
