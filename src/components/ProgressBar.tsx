@@ -23,7 +23,7 @@ export function ProgressBar({ value, label }: Props) {
           ]}
         />
       </View>
-      <Text style={[styles.label, { color: theme.colors.muted }]}> 
+      <Text style={[styles.label, { color: theme.colors.muted }]}>
         {Math.round(normalized * 100)}% repaid
       </Text>
     </View>
