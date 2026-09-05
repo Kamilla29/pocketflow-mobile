@@ -1,8 +1,14 @@
-import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+  type LinkingOptions
+} from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'expo-status-bar';
 import { AppNavigator } from '@app/navigation/AppNavigator';
 import { AppErrorBoundary } from '@app/components/AppErrorBoundary';
+import type { RootStackParamList } from '@app/navigation/types';
 import { useAppTheme } from '@app/theme/useAppTheme';
 import { usePreferencesStore } from '@app/state/preferencesStore';
 
@@ -12,7 +18,7 @@ const queryClient = new QueryClient({
   }
 });
 
-const linking = {
+const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ['pocketflow://'],
   config: {
     screens: {
