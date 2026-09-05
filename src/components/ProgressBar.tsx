@@ -16,7 +16,12 @@ export function ProgressBar({ value, label }: Props) {
       style={{ gap: theme.spacing.xs }}
     >
       <View style={[styles.track, { backgroundColor: theme.colors.surfaceMuted }]}>
-        <View style={[styles.fill, { width: `${normalized * 100}%`, backgroundColor: theme.colors.brand }]} />
+        <View
+          style={[
+            styles.fill,
+            { width: `${normalized * 100}%`, backgroundColor: theme.colors.brand }
+          ]}
+        />
       </View>
       <Text style={[styles.label, { color: theme.colors.muted }]}> 
         {Math.round(normalized * 100)}% repaid

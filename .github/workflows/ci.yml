@@ -19,9 +19,10 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install locked dependencies
+        run: npm ci
 
       - name: Check Expo dependency alignment
         run: npx expo install --check
@@ -37,11 +38,3 @@ jobs:
 
       - name: Metro export smoke test
         run: npm run bundle
-
-      - name: Upload generated lockfile
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: npm-lockfile
-          path: package-lock.json
-          if-no-files-found: ignore
