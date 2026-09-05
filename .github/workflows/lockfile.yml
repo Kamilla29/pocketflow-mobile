@@ -1,0 +1,40 @@
+name: Lock dependencies
+
+on:
+  push:
+    branches: [release/pocketflow-v1]
+
+permissions:
+  contents: write
+
+jobs:
+  lock:
+    if: ${{ !contains(github.event.head_commit.message, 'chore: lock dependencies') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v7
+        with:
+          ref: release/pocketflow-v1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Generate lockfile
+        run: npm install --package-lock-only
+
+      - name: Commit lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          if git diff --cached --quiet; then
+            echo "Lockfile already current"
+          else
+            git commit -m "chore: lock dependencies"
+            git push origin HEAD:release/pocketflow-v1
+          fi
