@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "PocketFlow",
+    "slug": "pocketflow-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.kamilla.pocketflow"
+    },
+    "android": {
+      "package": "dev.kamilla.pocketflow"
+    },
+    "scheme": "pocketflow"
+  }
+}
