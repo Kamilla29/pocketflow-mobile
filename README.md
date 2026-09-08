@@ -14,6 +14,18 @@
 
 PocketFlow is the mobile companion in the fictional **LoanFlow** product family. The project is intentionally non-transactional: its purpose is to demonstrate mobile engineering decisions rather than simulate a real bank.
 
+## Runtime screenshots
+
+These screenshots were captured from a **standalone Android release APK** running on a Pixel 6 emulator (Android API 35). They are runtime captures of the application, not mockups or illustrative artwork.
+
+| Overview | Payment schedule |
+| --- | --- |
+| ![PocketFlow overview screen](docs/screenshots/overview.png) | ![PocketFlow payment schedule screen](docs/screenshots/payment-schedule.png) |
+
+| Checklist | Settings |
+| --- | --- |
+| ![PocketFlow checklist screen](docs/screenshots/checklist.png) | ![PocketFlow settings screen](docs/screenshots/settings.png) |
+
 ## Recruiter quick scan
 
 | Area | Evidence in this repository |
@@ -166,7 +178,7 @@ Together they show web development, mobile development, automated testing and re
 
 ## Portfolio-final status
 
-The current codebase is treated as the **portfolio-final baseline**. Future feature work should be driven by a concrete vacancy, interview task or learning objective instead of adding scope for its own sake.
+The current codebase is treated as the **portfolio-final baseline**. The Android release build was also executed successfully to capture the runtime screenshots shown above. Future feature work should be driven by a concrete vacancy, interview task or learning objective instead of adding scope for its own sake.
 
 See [`CHANGELOG.md`](CHANGELOG.md) for the final portfolio increment.
 
