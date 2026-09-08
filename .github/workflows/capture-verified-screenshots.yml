@@ -1,0 +1,107 @@
+name: Capture verified Android screenshots
+
+on:
+  push:
+    branches:
+      - chore/verified-runtime-screenshots
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    if: ${{ !contains(github.event.head_commit.message, '[screenshots captured]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Android project
+        run: npx expo prebuild --platform android --no-install
+        env:
+          CI: '1'
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Boot emulator and capture actual app screens
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            set -euxo pipefail
+
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb reverse tcp:8081 tcp:8081
+
+            CI=1 npx expo start --localhost > /tmp/pocketflow-metro.log 2>&1 &
+            METRO_PID=$!
+
+            for attempt in $(seq 1 30); do
+              if curl -fsS http://127.0.0.1:8081/status | grep -q 'packager-status:running'; then
+                break
+              fi
+              sleep 2
+            done
+
+            curl -fsS http://127.0.0.1:8081/status | grep -q 'packager-status:running'
+
+            mkdir -p docs/screenshots
+
+            adb shell am force-stop dev.kamilla.pocketflow || true
+            adb shell monkey -p dev.kamilla.pocketflow -c android.intent.category.LAUNCHER 1
+            sleep 15
+            adb exec-out screencap -p > docs/screenshots/overview.png
+
+            adb shell am start -W -a android.intent.action.VIEW -d 'pocketflow://payments' -p dev.kamilla.pocketflow
+            sleep 5
+            adb exec-out screencap -p > docs/screenshots/payment-schedule.png
+
+            adb shell am start -W -a android.intent.action.VIEW -d 'pocketflow://checklist' -p dev.kamilla.pocketflow
+            sleep 5
+            adb exec-out screencap -p > docs/screenshots/checklist.png
+
+            adb shell cmd uimode night yes
+            adb shell am force-stop dev.kamilla.pocketflow || true
+            adb shell monkey -p dev.kamilla.pocketflow -c android.intent.category.LAUNCHER 1
+            sleep 8
+            adb shell am start -W -a android.intent.action.VIEW -d 'pocketflow://settings' -p dev.kamilla.pocketflow
+            sleep 5
+            adb exec-out screencap -p > docs/screenshots/settings-dark.png
+
+            kill "$METRO_PID" || true
+
+            test -s docs/screenshots/overview.png
+            test -s docs/screenshots/payment-schedule.png
+            test -s docs/screenshots/checklist.png
+            test -s docs/screenshots/settings-dark.png
+
+      - name: Commit verified runtime captures
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/screenshots/*.png
+          git commit -m 'docs: add verified Android runtime screenshots [screenshots captured]'
+          git push origin HEAD:${GITHUB_REF_NAME}
