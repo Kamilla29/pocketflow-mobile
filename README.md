@@ -12,10 +12,6 @@
 
 </div>
 
-![PocketFlow Mobile portfolio cover](docs/assets/pocketflow-hero.svg)
-
-> The cover above is an illustrative repository graphic based on the implemented product structure. It is intentionally **not** presented as an application screenshot.
-
 PocketFlow is the mobile companion in the fictional **LoanFlow** product family. The project is intentionally non-transactional: its purpose is to demonstrate mobile engineering decisions rather than simulate a real bank.
 
 ## Recruiter quick scan
@@ -171,8 +167,6 @@ Together they show web development, mobile development, automated testing and re
 ## Portfolio-final status
 
 The current codebase is treated as the **portfolio-final baseline**. Future feature work should be driven by a concrete vacancy, interview task or learning objective instead of adding scope for its own sake.
-
-Real runtime screenshots and demo video should only be added from a verified simulator/device capture so the repository never presents generated mockups as application evidence.
 
 See [`CHANGELOG.md`](CHANGELOG.md) for the final portfolio increment.
 
