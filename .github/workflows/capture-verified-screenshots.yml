@@ -45,9 +45,11 @@ jobs:
         env:
           CI: '1'
 
-      - name: Build x86_64 debug APK
+      - name: Build standalone x86_64 release APK
         working-directory: android
-        run: ./gradlew assembleDebug -PreactNativeArchitectures=x86_64 --no-daemon
+        run: ./gradlew assembleRelease -PreactNativeArchitectures=x86_64 --no-daemon
+        env:
+          NODE_ENV: production
 
       - name: Boot emulator and capture actual app screens
         uses: reactivecircus/android-emulator-runner@v2
