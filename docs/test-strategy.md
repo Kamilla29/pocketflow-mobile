@@ -1,8 +1,10 @@
 # Test strategy
 
-PocketFlow v1 focuses on deterministic domain logic, API contracts, reusable UI behavior and a reproducible mobile build smoke test.
+PocketFlow focuses on deterministic domain logic, API contracts, reusable UI behavior, reproducible CI checks and a focused mobile smoke journey.
 
-## Current automated coverage
+## Current automated CI coverage
+
+GitHub Actions and the Jenkins Pipeline run:
 
 - amortized monthly payment calculation;
 - payment schedule generation;
@@ -15,15 +17,30 @@ PocketFlow v1 focuses on deterministic domain logic, API contracts, reusable UI 
 - Expo dependency compatibility and Expo Doctor;
 - Metro iOS export smoke test.
 
+## Mobile E2E specification
+
+`.maestro/smoke.yaml` adds a device-level smoke journey for the highest-value paths:
+
+- clean application launch;
+- overview rendering;
+- payment schedule navigation;
+- checklist navigation;
+- application-details navigation;
+- Settings navigation and appearance change;
+- custom-scheme deep link to Activity.
+
+The Maestro flow requires an installed native build and a simulator/emulator or device. It is not currently executed by GitHub Actions or Jenkins, and the project documentation does not claim otherwise.
+
+## Testing boundaries
+
+PocketFlow deliberately keeps its portfolio data deterministic. Unit/component tests validate logic and contracts, while CI validates that the project remains type-safe, dependency-compatible and bundleable. The Maestro flow targets cross-screen behavior that is not efficiently proven by isolated unit tests.
+
 ## Next quality increment
 
-A later enhancement release can extend coverage with:
+Useful future additions, only if the project continues beyond the current portfolio scope:
 
-- navigation tests for deep links and stack flows;
-- a mobile E2E smoke flow, preferably Maestro;
-- iOS simulator and Android emulator execution;
-- large text and dynamic-type validation;
+- run Maestro on a device-capable CI worker;
+- explicit deep-link navigation tests at the React Navigation layer;
+- large-text and dynamic-type validation;
 - VoiceOver/TalkBack focus-order checks;
-- explicit light/dark/system appearance regression tests.
-
-These are follow-up improvements rather than requirements claimed as completed in v1.
+- screenshot regression for light/dark/system appearance modes.
