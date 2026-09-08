@@ -1,0 +1,28 @@
+appId: dev.kamilla.pocketflow
+name: PocketFlow core smoke flow
+---
+- launchApp:
+    clearState: true
+
+- assertVisible: "Your loan at a glance"
+- assertVisible: "Open payment schedule"
+
+- tapOn: "Open payment schedule"
+- assertVisible: "Payment schedule"
+- back
+
+- tapOn: "Application checklist"
+- assertVisible: "Checklist"
+- back
+
+- tapOn: "Application details"
+- assertVisible: "Application details"
+- back
+
+- tapOn: "Settings"
+- assertVisible: "Appearance"
+- tapOn: "dark"
+- assertVisible: "Privacy by design"
+
+- openLink: "pocketflow://activity"
+- assertVisible: "Activity"
